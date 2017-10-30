@@ -1,0 +1,107 @@
+/*原点記録.現在地検出.角度算出*/
+//右回し 21,20,10,11,21
+
+void setup() {
+  Serial.begin(9600) ;      // シリアル通信の準備
+}
+void loop() {
+  int ba, aa; //2桁変換式
+  int na1, na2; //原点の格納
+  int a1, a2;   //現在地の検出
+  int sa1, sa2; //現在地の出力判定
+  int eba1, eba2; //現在地の出力：前
+  int eaa1, eaa2; //現在地の出力：後
+  Serial.println("test");  //初期値の入力
+  na1 = digitalRead(8);
+  na2 = digitalRead(9);
+
+
+  //main program
+  while (1) {
+    a1 = digitalRead(8);    //現在データの入力
+    a2 = digitalRead(9);
+
+    /*
+        Serial.print("natural  ");    //初期データの出力
+        Serial.print("A") ;
+        Serial.print(na1) ;
+        Serial.print(na2) ;
+    */
+
+    /*
+        Serial.print("  before  ");   //前回データの出力
+        Serial.print("A") ;
+        Serial.print(eba1) ;
+        Serial.print(eba2) ;
+    */
+
+    // Serial.print("  now  ");    //現在データの出力
+    eaa1 = a1;
+    eaa2 = a2;
+    /*
+        Serial.print("A") ;
+        Serial.print(eaa1) ;
+        Serial.print(eaa2);
+    */
+    Serial.print("  cange vol  ");
+    ba = (eba1 + 1) * 10 + eba2; //2桁変換式,10進数
+    aa = (eaa1 + 1) * 10 + eaa2;
+    Serial.print("A ") ;
+    if (ba == aa) {
+      Serial.print("   0") ;
+    }
+    else {
+      switch (ba) {
+        case 20: {
+            if (aa == 21) {
+              Serial.print(" -") ;
+              break;
+            }
+            //if (aa == 10)
+            else {
+              Serial.print("     +") ;
+              break;
+            }
+          }
+        case 10: {
+            if (aa == 11) {
+              Serial.print("     +") ;
+              break;
+            }
+            //if (aa == 20)
+            else {
+              Serial.print(" -") ;
+              break;
+            }
+          }
+        case 11: {
+            if (aa == 21) {
+              Serial.print("     +") ;
+              break;
+            }
+            //if (aa == 10)
+            else {
+              Serial.print(" -") ;
+              break;
+            }
+          }
+        case 21: {
+            if (aa == 20) {
+              Serial.print("     +") ;
+              break;
+            }
+            //if (aa == 11)
+            else {
+              Serial.print(" -") ;
+              break;
+            }
+          }
+      }
+    }
+
+    Serial.println();
+    eba1 = digitalRead(8);    //前回データの入力
+    eba2 = digitalRead(9);
+    delay(10) ;    //周期のペース
+  }
+}
